@@ -1,44 +1,21 @@
 #!/usr/bin/env python3
-"""Fortune-cookie one-liner for the make.fun developers bounty."""
+"""Second fortune cookie for make.fun: the ignored bug."""
 
-from pathlib import Path
+# Bowo's pick: the bug waits for the worst possible audience.
 
-# The sentence is kept as single words so the assembled entry stays
-# byte-identical while every source line here is written fresh.
-WORDS = [
-    "The",
-    "meeting",
-    "that",
-    "could",
-    "have",
-    "been",
-    "an",
-    "email",
-    "will",
-    "outlive",
-    "the",
-    "code",
-    "it",
-    "discussed.",
-]
+import os
 
-MAX_CHARS = 120
-OUT_PATH = Path("/output/entry.txt")
+FORTUNE = "The bug you ignore today will demo itself in front of your biggest client tomorrow."
 
 
-def build_line(words):
-    """Join the entry words with single spaces."""
-    return " ".join(words)
+def reveal_fortune() -> None:
+    """Write Bowo's bug fortune to /output/entry.txt, nothing else."""
+    if len(FORTUNE) > 120 or not FORTUNE.strip():
+        raise ValueError("fortune must be a non-empty line of at most 120 characters")
+    os.makedirs("/output", exist_ok=True)
+    with open("/output/entry.txt", "w", encoding="utf-8") as handle:
+        handle.write(FORTUNE)
 
 
-def run():
-    line = build_line(WORDS)
-    if not line:
-        raise SystemExit("entry line came out empty")
-    if len(line) > MAX_CHARS:
-        raise SystemExit(f"entry is {len(line)} chars, over the {MAX_CHARS} limit")
-    OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUT_PATH.write_text(line, encoding="utf-8")
-
-
-run()
+if __name__ == "__main__":  # run it
+    reveal_fortune()
